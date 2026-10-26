@@ -51,7 +51,7 @@ resource "aws_security_group" "jenkins" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = ["${var.my_ip}/32"]
+    cidr_blocks = ["${var.my_ip}/24"]
   }
 
   ingress {
@@ -67,7 +67,7 @@ resource "aws_security_group" "jenkins" {
     from_port   = 9000
     to_port     = 9000
     protocol    = "tcp"
-    cidr_blocks = ["${var.my_ip}/32"]
+    cidr_blocks = ["${var.my_ip}/24"]
   }
 
   egress {
@@ -80,7 +80,7 @@ resource "aws_security_group" "jenkins" {
 
 resource "aws_instance" "jenkins" {
   ami                    = data.aws_ami.ubuntu.id
-  instance_type          = "t3.large"
+  instance_type          = "m7i-flex.large"
   subnet_id              = module.vpc.public_subnets[0]
   vpc_security_group_ids = [aws_security_group.jenkins.id]
   key_name               = aws_key_pair.jenkins.key_name
